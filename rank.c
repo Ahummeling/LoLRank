@@ -60,6 +60,7 @@ void cleanAll(CURL* easyhandle, urlinfo* uinfo){
 int main(int argc, char** argv){
     CURL* easyhandle = initFunction();
     urlinfo uinfo;
+    mem mem;
     uinfo.name = malloc(50*sizeof(char));
     if(argc>=2) {
         strcpy(uinfo.name,argv[1]);
@@ -72,7 +73,8 @@ int main(int argc, char** argv){
     //printf("url %s\n",uinfo.url);
     //curl_easy_perform(easyhandle);
     //printf("\n");
-    writeFunction(easyhandle);
+    mem = writeFunction(easyhandle);
+    printf("output = %s\n",mem.memory);
     cleanAll(easyhandle, &uinfo);
     return 0;
 }

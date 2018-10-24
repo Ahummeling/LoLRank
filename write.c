@@ -22,7 +22,7 @@ size_t write_data(void *contents, size_t size, size_t nmemb, void *userp){
   return realsize;
 }
 
-void writeFunction(CURL* easyhandle){
+mem writeFunction(CURL* easyhandle){
     mem chunk;
     chunk.memory = malloc(1);
     chunk.size = 0;
@@ -33,4 +33,5 @@ void writeFunction(CURL* easyhandle){
         exit(-1);
     }
     printf("%lu bytes retrieved.\n",(unsigned long)chunk.size);
+    return chunk;
 }

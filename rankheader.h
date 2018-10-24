@@ -24,4 +24,4 @@ void cleanAll(CURL* easyhandle, urlinfo* uinfo);
 
 size_t write_data(void *buffer, size_t size, size_t nmemb, void* userp);
 
-void writeFunction(CURL* easyhandle);
+mem writeFunction(CURL* easyhandle);
