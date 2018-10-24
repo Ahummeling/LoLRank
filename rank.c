@@ -70,8 +70,9 @@ int main(int argc, char** argv){
     setURL(&uinfo);
     curl_easy_setopt(easyhandle,CURLOPT_URL,uinfo.url);
     //printf("url %s\n",uinfo.url);
-    curl_easy_perform(easyhandle);
-    printf("\n");
+    //curl_easy_perform(easyhandle);
+    //printf("\n");
+    writeFunction(easyhandle);
     cleanAll(easyhandle, &uinfo);
     return 0;
 }

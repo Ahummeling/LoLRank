@@ -1,5 +1,5 @@
 CC=gcc
 CFLAGS = -Wall -pedantic -lcurl -lm
 
-rank: rank.o cJSON.o
-	$(CC) -o rank rank.c cJSON.c $(CFLAGS)
+rank: write.o rank.o
+	$(CC) -o rank write.c rank.c  $(CFLAGS)
