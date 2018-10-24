@@ -27,6 +27,7 @@ urlinfo readKey(urlinfo uinfo){
 
 void appendKey(urlinfo* uinfo){
     uinfo->key = malloc(KEYSIZE*sizeof(char));
+    *uinfo = readKey(*uinfo);
     strcat(uinfo->url,uinfo->key);
     free(uinfo->key);
 }
@@ -42,6 +43,7 @@ void appendName(urlinfo* uinfo){
 
 void setURL(urlinfo* uinfo){
     char url[] = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/\0";
+    //char url[] = "https://euw1.api.riotgames.com/lol/league/v3/positions/by-summoner/\0";
     uinfo->url = malloc(300*sizeof(char));
     strcpy(uinfo->url,url);
     appendName(uinfo);
@@ -67,8 +69,9 @@ int main(int argc, char** argv){
     }
     setURL(&uinfo);
     curl_easy_setopt(easyhandle,CURLOPT_URL,uinfo.url);
+    //printf("url %s\n",uinfo.url);
     curl_easy_perform(easyhandle);
-    printf("url: %s\n",uinfo.url);
+    printf("\n");
     cleanAll(easyhandle, &uinfo);
     return 0;
 }
