@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "curl/curl.h"
+#include "cJSON.h"
 #include "rankheader.h"
 
 #define KEYSIZE 43
@@ -24,28 +25,50 @@ urlinfo readKey(urlinfo uinfo){
     return uinfo;
 }
 
-void setURL(urlinfo* uinfo){
-    char url[] = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/tedtski?api_key=\0";
-    uinfo->url = malloc(300*sizeof(char));
-    strcpy(uinfo->url,url);
+void appendKey(urlinfo* uinfo){
+    uinfo->key = malloc(KEYSIZE*sizeof(char));
     strcat(uinfo->url,uinfo->key);
     free(uinfo->key);
 }
 
+void appendName(urlinfo* uinfo){
+    strcat(uinfo->url,uinfo->name);
+    char api_key[] = "?api_key=";
+    char* api = malloc(10*sizeof(char));
+    strcpy(api,api_key);
+    strcat(uinfo->url,api);
+    free(api);
+}
+
+void setURL(urlinfo* uinfo){
+    char url[] = "https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/\0";
+    uinfo->url = malloc(300*sizeof(char));
+    strcpy(uinfo->url,url);
+    appendName(uinfo);
+    appendKey(uinfo);
+}
+
 void cleanAll(CURL* easyhandle, urlinfo* uinfo){
     free(uinfo->url);
+    free(uinfo->name);
     curl_easy_cleanup(easyhandle);
     curl_global_cleanup();
 }
 
-int main(){
+int main(int argc, char** argv){
     CURL* easyhandle = initFunction();
     urlinfo uinfo;
-    uinfo.key = malloc(KEYSIZE*sizeof(char));
-    uinfo = readKey(uinfo);
+    uinfo.name = malloc(50*sizeof(char));
+    if(argc>=2) {
+        strcpy(uinfo.name,argv[1]);
+    } else{
+        printf("Please input your summonername: \n");
+        scanf("%s",uinfo.name);
+    }
     setURL(&uinfo);
     curl_easy_setopt(easyhandle,CURLOPT_URL,uinfo.url);
-    
+    curl_easy_perform(easyhandle);
+    printf("url: %s\n",uinfo.url);
     cleanAll(easyhandle, &uinfo);
     return 0;
 }
